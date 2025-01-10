@@ -16,7 +16,7 @@ const __dirname = dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.use(cors());
 
 app.use(express.json()); // Parse JSON bodies
