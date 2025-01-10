@@ -1,21 +1,52 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from '../../components/axiosInstance';
+import { useRouter } from 'next/navigation'; // Import from next/navigation
+import Link from 'next/link';
 
 export default function LoginPage() {
-  const [isVisible, setIsVisible] = useState(window.innerWidth >= 800);
+  const [isVisible, setIsVisible] = useState(false); // Initialize as false
+  const [username, setUsername] = useState(''); // State to store username
+  const [password, setPassword] = useState(''); // State to store password
+  const [errorMessage, setErrorMessage] = useState(''); // State for error message
+  const router = useRouter(); // Correct import
 
-  // Update visibility on window resize
+  // Check window width only on the client side
   useEffect(() => {
-    const handleResize = () => {
+    const checkVisibility = () => {
       setIsVisible(window.innerWidth >= 800);
     };
 
-    window.addEventListener('resize', handleResize);
+    // Initial check
+    checkVisibility();
+
+    // Update visibility on window resize
+    window.addEventListener('resize', checkVisibility);
+
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', checkVisibility);
     };
   }, []);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await axios.post('/auth/login', { username, password });
+
+      if (response.data.accessToken) {
+        localStorage.setItem('accessToken', response.data.accessToken);
+
+        router.push('/'); // Redirect to home page
+      } else {
+        setErrorMessage('Invalid credentials. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+      setErrorMessage('INVALID CREDENTIALS');
+    }
+  };
 
   const inputStyle = {
     width: '100%',
@@ -85,9 +116,22 @@ export default function LoginPage() {
       >
         <div style={formContainerStyle}>
           <h2>Login</h2>
-          <form>
-            <input type="text" placeholder="Username" style={inputStyle} />
-            <input type="password" placeholder="Password" style={inputStyle} />
+          {errorMessage && <div style={{ color: 'red', marginBottom: '15px' }}>{errorMessage}</div>}
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="Username"
+              style={inputStyle}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              style={inputStyle}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '15px' }}>
               <input type="checkbox" id="rememberMe" />
               <label htmlFor="rememberMe" style={{ marginLeft: '5px' }}>
@@ -98,6 +142,11 @@ export default function LoginPage() {
               LOGIN
             </button>
           </form>
+          <div style={{ marginTop: '15px', textAlign: 'center' }}>
+            <Link href="/signup" style={{ color: 'blue', textDecoration: 'underline' }}>
+              Don't have an account? Sign up here
+            </Link>
+          </div>
         </div>
       </div>
     </div>
