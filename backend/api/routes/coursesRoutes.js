@@ -37,6 +37,9 @@ router.get('/courses/:id', getCourseById); // Public route: No authentication re
 router.put('/courses/:id', protect, updateCourse); // Protected route: Requires authentication
 router.delete('/courses/:id', protect, deleteCourse); // Protected route: Requires authentication
 router.post('/courses/get-course-id',protect,getCourseId);
+router.get('/', (req, res) => {
+    res.status(200).send('Backend is running');
+  });  
 
 export default router; // Export the router for use in other files
 
