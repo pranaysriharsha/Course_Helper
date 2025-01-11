@@ -111,10 +111,10 @@ const  Home=()=> {
         // Handle validation or other errors (e.g., duplicate course submission)
         else if (error.response && error.response.status === 400) {
           console.error('Invalid data submitted:', error);
-          alert('Invalid data. Course with the same code may already exists. Please check your data.');
+          alert('Invalid data. Course with the same code may already exists. Please check your data. Make sure to enter positive integer credits.');
         }else if (error.response && error.response.status === 500) {
           console.error('Invalid data submitted:', error);
-          alert('Invalid data. Course with the same code may already exists. Please check your data.');
+          alert('Invalid data. Course with the same code may already exists. Please check your data.Make sure to enter positive integer credits.');
         } 
          else {
           console.error('Error submitting form:', error);
