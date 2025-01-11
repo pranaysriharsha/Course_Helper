@@ -32,6 +32,11 @@ export default function LoginPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (password.length < 6) {
+      setErrorMessage('Password must be at least 6 characters long');
+      return; // Stop execution if validation fails
+  }
+
     try {
         const response = await axios.post('/auth/register', { username, password });
       
