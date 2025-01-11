@@ -36,6 +36,10 @@ export default function LoginPage() {
       setErrorMessage('Password must be at least 6 characters long');
       return; // Stop execution if validation fails
   }
+    if (username.length < 6) {
+      setErrorMessage('Username must be at least 6 characters long');
+      return; // Stop execution if validation fails
+    }
 
     try {
         const response = await axios.post('/auth/register', { username, password });
