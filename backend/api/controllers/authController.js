@@ -20,6 +20,13 @@ const generateRefreshToken = (userId, username) => {
 export const register = async (req, res) => {
     const { username, password } = req.body;
 
+    if (!username || username.trim() === '') {
+        return res.status(400).json({ message: 'Username is required' });
+    }
+    if (!password || password.length < 6) {
+        return res.status(400).json({ message: 'Password must be at least 6 characters' });
+    }
+
     try {
         // Check if the user already exists
         const existingUser = await queryDb('SELECT * FROM my_schema.users WHERE username = $1', [username]);
