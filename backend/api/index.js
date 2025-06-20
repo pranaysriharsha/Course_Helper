@@ -19,9 +19,23 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors({
-  origin: 'https://coursehelper-pranay-sri-harshas-projects.vercel.app',
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      'https://coursehelper-pranay-sri-harshas-projects.vercel.app',
+      /^https:\/\/coursehelper-[a-z0-9]+-pranay-sri-harshas-projects\.vercel\.app$/
+    ];
+
+    if (allowedOrigins.some(o =>
+      typeof o === 'string' ? o === origin : o.test(origin)
+    )) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
+
 
 
 app.use(express.json()); // Parse JSON bodies
