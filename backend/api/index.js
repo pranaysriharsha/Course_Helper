@@ -18,25 +18,7 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors({
-  origin: (origin, callback) => {
-    const allowedOrigins = [
-      'https://coursehelper-pranay-sri-harshas-projects.vercel.app',
-      /^https:\/\/coursehelper-[a-z0-9]+-pranay-sri-harshas-projects\.vercel\.app$/
-    ];
-
-    if (allowedOrigins.some(o =>
-      typeof o === 'string' ? o === origin : o.test(origin)
-    )) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true
-}));
-
-
+app.use(cors());
 
 app.use(express.json()); // Parse JSON bodies
 app.use('', coursesRoutes); // Prefix routes with /api
