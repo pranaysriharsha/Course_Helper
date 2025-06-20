@@ -18,7 +18,10 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  credentials: true
+}));
 
 app.use(express.json()); // Parse JSON bodies
 app.use('', coursesRoutes); // Prefix routes with /api
